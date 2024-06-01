@@ -1,0 +1,143 @@
+import 'package:artisan_shop/pages/art_page.dart';
+import 'package:artisan_shop/pages/cart_page.dart';
+import 'package:artisan_shop/pages/inventory_page.dart';
+import 'package:artisan_shop/pages/shop_page.dart';
+import 'package:flutter/material.dart';
+import 'components/bottom_nav_bar.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  // This selected index is to control the bottom nav bar
+  int _selectedIndex = 0;
+
+  // This method will update our selected index when user taps bottom bar
+  void navigateBottomBar(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  // Pages to display
+  final List<Widget> _pages = [
+    // Shop page
+    const ShopPage(),
+
+    // Cart page
+    CartPage(),
+
+    // Art page
+    const ArtPage(),
+
+    // Inventory page
+    LoginPage(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[300], //background color for shop,cart,art
+      bottomNavigationBar: MyBottomNavBar(
+        onTabChange: (index) => navigateBottomBar(index),
+      ),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu),
+            color: Colors.black,
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ),
+      ),
+      drawer: Drawer(
+        backgroundColor: Colors.grey[900],
+        child: Column(
+          children: [
+            //logo
+            DrawerHeader(child: Image.asset('images/art1.jpeg')),
+            const Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 25.0,
+              ),
+              child: Divider(
+                color: Colors.red,
+              ),
+            ),
+
+            //other pages
+            const Padding(
+              padding: EdgeInsets.only(left: 15.0),
+              child: ListTile(
+                leading: Icon(
+                  Icons.home,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Home",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 15.0),
+              child: ListTile(
+                leading: Icon(
+                  Icons.light_outlined,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Dark or Light",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 15.0),
+              child: ListTile(
+                leading: Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Settings",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 15.0),
+              child: ListTile(
+                leading: Icon(
+                  Icons.exit_to_app,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Exit",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+      body: _pages[_selectedIndex],
+    );
+  }
+}
